@@ -6,6 +6,10 @@ import numpy as np
 video = cv2.VideoCapture("video.mp4")
 image = cv2.imread("image.jpg")
 
+#Storing the video in the folder
+result = cv2.VideoWriter('result.mp4', 
+                         cv2.VideoWriter_fourcc(*'MJPG'),
+                         40, (640,480))
 while True:
     ret, frame = video.read()
     frame = cv2.resize(frame,(640,480))
@@ -17,8 +21,8 @@ while True:
     res = cv2.bitwise_and(frame,frame,mask=mask)
     f = frame-res
     green_screen=np.where(f==0, image, f)
-
     cv2.imshow("Final",green_screen)
+    result.write(green_screen)
     k=cv2.waitKey(1) #Unicode value will be stored
     if k==ord('q'):
         break
